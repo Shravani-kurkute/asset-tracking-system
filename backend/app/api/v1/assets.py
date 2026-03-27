@@ -7,6 +7,7 @@ from app.core.dependencies import get_current_user, require_dept_admin_or_above
 from app.database import get_db
 from app.models.asset import Asset, AssetStatus
 from app.models.assignment import Assignment
+from app.models.maintenance import MaintenanceRequest
 from app.models.user import User
 from app.schemas.asset import AssetCreate, AssetResponse, AssetUpdate
 
@@ -184,6 +185,15 @@ def delete_asset(
         raise HTTPException(
             status_code=400,
             detail="Cannot delete an asset with assignment history",
+        )
+
+    maintenance_count = (
+        db.query(MaintenanceRequest).filter(MaintenanceRequest.asset_id == asset.id).count()
+    )
+    if maintenance_count:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot delete an asset with maintenance history",
         )
 
     db.delete(asset)

@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
@@ -8,10 +9,17 @@ import Assets from "./pages/assets/Assets";
 import MyAssets from "./pages/assets/MyAssets";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AssignAsset from "./pages/assignments/AssignAsset";
+import Maintenance from "./pages/maintenance/Maintenance";
+import Notifications from "./pages/notifications/Notifications";
+import RequestAsset from "./pages/requests/RequestAsset";
 import NotFound from "./pages/NotFound";
 import { ROLES } from "./utils/roles";
 
+const Reports = lazy(() => import("./pages/reports/Reports"));
+
 function App() {
+  console.log("App rendering");
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -35,6 +43,25 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/assets" element={<Assets />} />
               <Route path="/my-assets" element={<MyAssets />} />
+              <Route path="/requests" element={<RequestAsset />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route
+                path="/reports"
+                element={
+                  <ProtectedRoute
+                    allowedRoles={[
+                      ROLES.SYSTEM_ADMIN,
+                      ROLES.DEPT_ADMIN,
+                      ROLES.MANAGEMENT,
+                    ]}
+                  >
+                    <Suspense fallback={<div>Loading Reports...</div>}>
+                      <Reports />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/assign"
                 element={

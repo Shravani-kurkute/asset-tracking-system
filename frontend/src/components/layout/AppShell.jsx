@@ -1,24 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
+  BarChart3,
+  Bell,
   Boxes,
   CalendarDays,
+  ClipboardCheck,
   LayoutDashboard,
   LogOut,
   PackageOpen,
   Send,
   Shield,
+  Wrench,
 } from "lucide-react";
 
+import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import { ROLE_LABELS, ROLES } from "../../utils/roles";
 
 const ADMIN_ROLES = [ROLES.SYSTEM_ADMIN, ROLES.DEPT_ADMIN];
+const REPORT_ROLES = [ROLES.SYSTEM_ADMIN, ROLES.DEPT_ADMIN, ROLES.MANAGEMENT];
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/assets", label: "Assets", icon: Boxes },
   { to: "/my-assets", label: "My Assets", icon: PackageOpen },
+  { to: "/requests", label: "Asset Requests", icon: ClipboardCheck },
+  { to: "/maintenance", label: "Maintenance", icon: Wrench },
+  { to: "/notifications", label: "Notifications", icon: Bell },
+  { to: "/reports", label: "Reports", icon: BarChart3, reportOnly: true },
   { to: "/assign", label: "Assign Asset", icon: Send, adminOnly: true },
   { to: "/admin-panel", label: "Admin Panel", icon: Shield, adminOnly: true },
 ];
@@ -38,6 +48,26 @@ const routeMeta = {
     title: "My Assets",
     subtitle: "Review assets currently mapped to your account.",
     sectionLabel: "Assets",
+  },
+  "/requests": {
+    title: "Asset Requests",
+    subtitle: "Submit asset requests or review the latest approval queue.",
+    sectionLabel: "Requests",
+  },
+  "/maintenance": {
+    title: "Maintenance",
+    subtitle: "Report issues, review the queue, and track maintenance progress.",
+    sectionLabel: "Maintenance",
+  },
+  "/notifications": {
+    title: "Notifications",
+    subtitle: "Stay updated on requests, maintenance changes, and system alerts.",
+    sectionLabel: "Notifications",
+  },
+  "/reports": {
+    title: "Reports",
+    subtitle: "Review analytics across assets, requests, and maintenance activity.",
+    sectionLabel: "Analytics",
   },
   "/assign": {
     title: "Assign Asset",
@@ -69,9 +99,11 @@ function formatHeaderDate() {
 
 export default function AppShell({ children }) {
   const { user, logout } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const isAdmin = ADMIN_ROLES.includes(user?.role);
+  const canViewReports = REPORT_ROLES.includes(user?.role);
   const meta = routeMeta[location.pathname] || {
     title: "Workspace",
     subtitle: "Manage assets and assignments from a shared control center.",
@@ -86,6 +118,24 @@ export default function AppShell({ children }) {
   useEffect(() => {
     document.title = `${meta.title} | Asset Tracking System`;
   }, [meta.title]);
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      try {
+        const response = await api.get("/notifications");
+        const notifications = Array.isArray(response.data) ? response.data : [];
+        setUnreadCount(
+          notifications.filter((notification) => !notification?.is_read).length
+        );
+      } catch {
+        setUnreadCount(0);
+      }
+    };
+
+    loadNotifications();
+    window.addEventListener("notificationsUpdated", loadNotifications);
+    return () => window.removeEventListener("notificationsUpdated", loadNotifications);
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -108,7 +158,11 @@ export default function AppShell({ children }) {
           <nav className="flex-1 px-4 py-6">
             <div className="space-y-1">
               {navItems
-                .filter((item) => !item.adminOnly || isAdmin)
+                .filter(
+                  (item) =>
+                    (!item.adminOnly || isAdmin) &&
+                    (!item.reportOnly || canViewReports)
+                )
                 .map((item) => {
                   const Icon = item.icon;
                   const active = location.pathname === item.to;
@@ -181,6 +235,18 @@ export default function AppShell({ children }) {
                     <span>{formatHeaderDate()}</span>
                   </div>
 
+                  <Link
+                    to="/notifications"
+                    className="relative inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                  >
+                    <Bell className="h-4 w-4" />
+                    {unreadCount ? (
+                      <span className="absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-500 px-1 text-[11px] font-semibold text-white">
+                        {unreadCount}
+                      </span>
+                    ) : null}
+                  </Link>
+
                   <button
                     type="button"
                     onClick={handleLogout}
@@ -194,7 +260,11 @@ export default function AppShell({ children }) {
 
               <div className="flex gap-2 overflow-x-auto pb-1 xl:hidden">
                 {navItems
-                  .filter((item) => !item.adminOnly || isAdmin)
+                  .filter(
+                    (item) =>
+                      (!item.adminOnly || isAdmin) &&
+                      (!item.reportOnly || canViewReports)
+                  )
                   .map((item) => {
                     const Icon = item.icon;
                     const active = location.pathname === item.to;

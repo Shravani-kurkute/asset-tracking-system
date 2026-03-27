@@ -9,3 +9,10 @@ from app.schemas.user import (
 )
 from app.schemas.asset import AssetCreate, AssetResponse, AssetUpdate
 from app.schemas.assignment import AssignmentCreate, AssignmentResponse
+from app.schemas.asset_request import AssetRequestCreate, AssetRequestResponse
+from app.schemas.maintenance import (
+    MaintenanceCreate,
+    MaintenanceResponse,
+    MaintenanceStatusUpdate,
+)
+from app.schemas.notification import NotificationCreate, NotificationResponse

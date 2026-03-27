@@ -24,3 +24,5 @@ class Asset(Base):
 
     assigned_user = relationship("User", foreign_keys=[assigned_to])
     assignments = relationship("Assignment", back_populates="asset")
+    asset_requests = relationship("AssetRequest", back_populates="asset")
+    maintenance_requests = relationship("MaintenanceRequest", back_populates="asset")

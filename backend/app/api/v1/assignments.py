@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.dependencies import get_current_user, require_dept_admin_or_above
+from app.core.notifications import create_notification
 from app.database import get_db
 from app.models.asset import Asset, AssetStatus
 from app.models.assignment import Assignment
@@ -44,6 +45,18 @@ def assign_asset(
     asset.status = AssetStatus.Assigned
     asset.assigned_to = payload.user_id
     asset.return_date = payload.return_date
+
+    if payload.return_date:
+        create_notification(
+            db,
+            user_id=payload.user_id,
+            type="return_reminder",
+            title="Asset Return Reminder",
+            message=(
+                f"{asset.name} is assigned to you and should be returned by "
+                f"{payload.return_date.strftime('%d %b %Y')}."
+            ),
+        )
 
     db.commit()
     return (

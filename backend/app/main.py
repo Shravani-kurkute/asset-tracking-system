@@ -4,8 +4,11 @@ from app.config import settings
 from app.database import Base, engine
 from app.models import asset as asset_model  # registers model before create_all
 from app.models import assignment as assignment_model  # registers model before create_all
+from app.models import asset_request as asset_request_model  # registers model before create_all
+from app.models import maintenance as maintenance_model  # registers model before create_all
+from app.models import notification as notification_model  # registers model before create_all
 from app.models import user as user_model  # registers model before create_all
-from app.api.v1 import assets, assignments, auth, health
+from app.api.v1 import assets, assignments, auth, health, maintenance, notifications, reports, requests
 
 Base.metadata.create_all(bind=engine)
 
@@ -32,6 +35,10 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(assets.router, prefix="/api/v1")
 app.include_router(assignments.router, prefix="/api/v1")
+app.include_router(requests.router, prefix="/api/v1")
+app.include_router(maintenance.router, prefix="/api/v1")
+app.include_router(notifications.router, prefix="/api/v1")
+app.include_router(reports.router, prefix="/api/v1")
 app.include_router(health.router, prefix="/api/v1")
 
 

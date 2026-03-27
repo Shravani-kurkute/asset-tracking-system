@@ -136,6 +136,7 @@ export default function AssignAsset() {
       resetForm();
       await loadAssignPageData();
       window.dispatchEvent(new Event("dataUpdated"));
+      window.dispatchEvent(new Event("notificationsUpdated"));
     } catch (requestError) {
       toast.error(
         requestError.response?.data?.detail || "Unable to assign this asset."
