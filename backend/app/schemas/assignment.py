@@ -1,3 +1,5 @@
+"""Pydantic schemas for assignment APIs."""
+
 from datetime import date
 from typing import Optional
 

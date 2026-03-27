@@ -1,3 +1,5 @@
+// Reusable table for showing recent assignment activity on the dashboard.
+
 import { ClipboardList } from "lucide-react";
 
 const statusClasses = {

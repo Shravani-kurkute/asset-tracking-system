@@ -1,3 +1,5 @@
+"""Assignment history model for asset handovers."""
+
 from sqlalchemy import Column, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 

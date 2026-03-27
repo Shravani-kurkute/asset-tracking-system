@@ -1,3 +1,5 @@
+"""Pydantic schemas for user records and authentication payloads."""
+
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime

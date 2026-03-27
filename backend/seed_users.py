@@ -1,3 +1,5 @@
+"""Utility script that seeds the database with demo and admin users."""
+
 import os
 import sys
 

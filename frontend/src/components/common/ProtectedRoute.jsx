@@ -1,3 +1,5 @@
+// Route guard that blocks unauthenticated users and unsupported roles.
+
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 

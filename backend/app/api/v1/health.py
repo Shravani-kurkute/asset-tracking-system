@@ -1,3 +1,5 @@
+"""Health endpoints for simple uptime checks."""
+
 from fastapi import APIRouter
 from app.database import check_db_connection
 from app.config import settings

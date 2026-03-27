@@ -1,3 +1,5 @@
+// Asset request page for employee requests and admin approval decisions.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Inbox, Send, XCircle } from "lucide-react";
 import toast from "react-hot-toast";

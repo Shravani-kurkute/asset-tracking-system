@@ -1,3 +1,5 @@
+"""Asset request model used for approval workflows."""
+
 from sqlalchemy import Column, Integer, Date, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 import enum

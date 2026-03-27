@@ -1,3 +1,5 @@
+"""Pydantic schemas for asset request APIs."""
+
 from datetime import date
 
 from pydantic import BaseModel

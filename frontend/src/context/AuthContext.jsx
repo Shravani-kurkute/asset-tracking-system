@@ -1,3 +1,5 @@
+// Authentication context that stores the logged-in user and token lifecycle helpers.
+
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios";
 

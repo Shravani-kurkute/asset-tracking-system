@@ -1,3 +1,5 @@
+"""Local development entrypoint for running the FastAPI app with Uvicorn."""
+
 import uvicorn
 
 if __name__ == "__main__":

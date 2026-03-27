@@ -1,3 +1,5 @@
+"""Pydantic schemas for asset create, update, and response payloads."""
+
 from datetime import date
 from typing import Optional
 

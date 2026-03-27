@@ -1,3 +1,5 @@
+// Maintenance page for reporting issues and tracking maintenance progress.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertTriangle, CheckCircle2, Wrench, Zap } from "lucide-react";
 import toast from "react-hot-toast";

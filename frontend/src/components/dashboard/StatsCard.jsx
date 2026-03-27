@@ -1,3 +1,5 @@
+// Small reusable metric card used on dashboard and reporting pages.
+
 export default function StatsCard({ title, value, icon: Icon, color, subtitle }) {
   return (
     <div className="card relative overflow-hidden">

@@ -1,3 +1,5 @@
+"""Quick script to reset the default admin password in the database."""
+
 import sys 
 sys.path.append('.') 
 from app.database import SessionLocal 

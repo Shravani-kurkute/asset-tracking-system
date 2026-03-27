@@ -1,3 +1,5 @@
+// Shared role constants and labels used across access control and UI rendering.
+
 export const ROLES = {
     SYSTEM_ADMIN: "system_admin",
     DEPT_ADMIN: "dept_admin",

@@ -1,3 +1,5 @@
+// Reporting page that shows analytics summaries and supports PDF export.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BarChart3,

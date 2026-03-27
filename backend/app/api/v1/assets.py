@@ -1,3 +1,5 @@
+"""Asset inventory endpoints and asset lifecycle updates."""
+
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status

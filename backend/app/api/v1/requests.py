@@ -1,3 +1,5 @@
+"""Asset request endpoints for request submission and admin decisions."""
+
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status

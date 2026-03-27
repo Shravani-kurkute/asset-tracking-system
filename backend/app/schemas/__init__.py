@@ -1,3 +1,5 @@
+"""Convenience exports for schema modules."""
+
 # app/api/v1/__init__.py
 from app.schemas.user import (
     LoginRequest,

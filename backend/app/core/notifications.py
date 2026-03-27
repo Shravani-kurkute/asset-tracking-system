@@ -1,3 +1,5 @@
+"""Shared helpers for creating notifications from business workflows."""
+
 from sqlalchemy.orm import Session
 
 from app.models.notification import Notification

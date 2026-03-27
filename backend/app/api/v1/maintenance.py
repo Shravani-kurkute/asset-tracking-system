@@ -1,3 +1,5 @@
+"""Maintenance request endpoints and maintenance workflow updates."""
+
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status

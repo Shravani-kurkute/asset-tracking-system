@@ -1,3 +1,5 @@
+"""Centralized application settings loaded from environment variables."""
+
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 from urllib.parse import quote_plus

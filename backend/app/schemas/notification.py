@@ -1,3 +1,5 @@
+"""Pydantic schemas for notification APIs and admin alerts."""
+
 from datetime import datetime
 from typing import Optional
 

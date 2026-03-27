@@ -1,3 +1,5 @@
+/* Small legacy app-level styles kept for compatibility with earlier screens. */
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -182,3 +184,4 @@
     border-right-color: var(--border);
   }
 }
+/* Legacy app-level styles placeholder. */

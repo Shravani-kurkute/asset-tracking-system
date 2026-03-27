@@ -1,3 +1,5 @@
+// Login page for authenticating into the asset tracking system.
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";

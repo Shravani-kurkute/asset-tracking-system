@@ -1,3 +1,5 @@
+// Notification inbox page for request decisions, alerts, and maintenance updates.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bell, CheckCheck } from "lucide-react";
 import toast from "react-hot-toast";

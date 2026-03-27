@@ -1,3 +1,5 @@
+"""Reporting endpoints for analytics summaries and PDF export."""
+
 from datetime import datetime
 from io import BytesIO
 

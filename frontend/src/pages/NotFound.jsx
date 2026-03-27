@@ -1,3 +1,5 @@
+// Fallback page for any route that does not exist in the app.
+
 import { Link } from "react-router-dom";
 export default function NotFound() {
     return (

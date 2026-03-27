@@ -1,3 +1,5 @@
+// Full asset inventory page with search, filters, and admin CRUD actions.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Pencil,

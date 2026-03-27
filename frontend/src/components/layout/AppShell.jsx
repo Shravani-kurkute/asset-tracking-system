@@ -1,3 +1,5 @@
+// Shared authenticated layout with sidebar, header, and route outlet.
+
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {

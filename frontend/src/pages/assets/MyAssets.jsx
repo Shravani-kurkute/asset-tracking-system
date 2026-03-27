@@ -1,3 +1,5 @@
+// Personal asset history page for the currently logged-in user.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PackageOpen, RotateCcw } from "lucide-react";
 import toast from "react-hot-toast";

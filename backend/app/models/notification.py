@@ -1,3 +1,5 @@
+"""Notification model for the in-app notification inbox."""
+
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func

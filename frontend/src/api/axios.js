@@ -1,3 +1,5 @@
+// Shared axios client that injects auth tokens into every API request.
+
 import axios from "axios";
 
 const api = axios.create({

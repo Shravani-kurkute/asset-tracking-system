@@ -1,3 +1,5 @@
+"""Database engine, ORM base class, and session helpers."""
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.config import settings

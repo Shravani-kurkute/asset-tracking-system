@@ -1,3 +1,5 @@
+"""Asset assignment endpoints and assignment history management."""
+
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, status

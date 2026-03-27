@@ -1,3 +1,5 @@
+"""Pydantic schemas for maintenance APIs."""
+
 from datetime import datetime
 
 from pydantic import BaseModel

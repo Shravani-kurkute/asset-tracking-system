@@ -1,3 +1,5 @@
+"""Asset inventory model and asset status enum."""
+
 from sqlalchemy import Column, Integer, String, Date, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 import enum
