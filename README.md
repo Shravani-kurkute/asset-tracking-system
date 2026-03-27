@@ -171,6 +171,63 @@ npm run preview
 
 - Local backend base URL: `http://localhost:8000/api/v1`
 
+## Deployment
+
+Recommended production setup:
+
+- Frontend: Vercel
+- Backend: Render
+- Database: hosted MySQL provider
+
+### 1. Deploy Backend on Render
+
+- Create a new Web Service from this GitHub repository.
+- Render will detect `render.yaml`.
+- Service root: `backend`
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+Set these environment variables in Render:
+
+```env
+SECRET_KEY=replace_with_a_long_random_secret
+DATABASE_URL=mysql+pymysql://user:password@host:3306/asset_tracking_db
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+REFRESH_TOKEN_EXPIRE_DAYS=7
+FRONTEND_URL=https://your-frontend-domain.vercel.app
+CORS_ORIGINS=https://your-frontend-domain.vercel.app
+```
+
+After deploy, your backend URL will look like:
+
+```text
+https://your-render-service.onrender.com/api/v1
+```
+
+### 2. Deploy Frontend on Vercel
+
+- Import the same GitHub repository into Vercel.
+- Set the project root directory to `frontend`.
+- Vercel will use `frontend/vercel.json` so React Router routes work after refresh.
+
+Set this environment variable in Vercel:
+
+```env
+VITE_API_URL=https://your-render-service.onrender.com/api/v1
+```
+
+### 3. Production Database
+
+- Use a hosted MySQL database and pass its connection string as `DATABASE_URL`.
+- The backend still supports individual `DB_*` variables, but `DATABASE_URL` is the easiest production option.
+
+### 4. Important Notes
+
+- GitHub Pages alone is not enough for the full project because it can host only the frontend, not FastAPI or MySQL.
+- Use HTTPS URLs in production for both frontend and backend.
+- Update `CORS_ORIGINS` whenever your frontend production domain changes.
+
 ## Troubleshooting
 
 - `401 Unauthorized` on frontend:
