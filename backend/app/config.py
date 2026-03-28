@@ -1,7 +1,7 @@
 """Centralized application settings loaded from environment variables."""
 
 from functools import lru_cache
-from urllib.parse import quote_plus
+from urllib.parse import parse_qsl, quote_plus, urlencode, urlparse, urlunparse
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URL(self) -> str:
         if self.DATABASE_URL_OVERRIDE:
-            return self.DATABASE_URL_OVERRIDE
+            return self._normalize_database_url(self.DATABASE_URL_OVERRIDE)
 
         if not all([self.DB_HOST, self.DB_USER, self.DB_PASSWORD, self.DB_NAME]):
             raise ValueError(
@@ -35,6 +35,17 @@ class Settings(BaseSettings):
             )
         password = quote_plus(self.DB_PASSWORD)
         return f"mysql+pymysql://{self.DB_USER}:{password}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+    def _normalize_database_url(self, raw_url: str) -> str:
+        parsed = urlparse(raw_url)
+
+        if parsed.scheme in {"postgres", "postgresql"}:
+            scheme = "postgresql+psycopg"
+            query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+            query.setdefault("sslmode", "require")
+            return urlunparse(parsed._replace(scheme=scheme, query=urlencode(query)))
+
+        return raw_url
 
     @property
     def allowed_origins(self) -> list[str]:
