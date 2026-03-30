@@ -6,9 +6,6 @@ import toast from "react-hot-toast";
 
 import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
-import { ROLES } from "../../utils/roles";
-
-const ADMIN_ROLES = [ROLES.SYSTEM_ADMIN, ROLES.DEPT_ADMIN];
 
 function formatDate(value) {
   if (!value) return "Not returned";
@@ -26,8 +23,6 @@ export default function MyAssets() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [returningAssetId, setReturningAssetId] = useState(null);
-
-  const isAdmin = ADMIN_ROLES.includes(user?.role);
 
   const loadMyAssets = useCallback(async () => {
     setLoading(true);
@@ -180,7 +175,9 @@ export default function MyAssets() {
                     ? "Returned"
                     : assignment.asset?.status || "Assigned";
                   const canReturn =
-                    isAdmin && !assignment.return_date && assignment.asset_id;
+                    !assignment.return_date &&
+                    assignment.asset_id &&
+                    assignment.asset?.status === "Assigned";
 
                   return (
                     <tr key={assignment.id} className="table-row">
@@ -226,7 +223,7 @@ export default function MyAssets() {
                           <span className="text-xs text-slate-400">
                             {assignment.return_date
                               ? "Completed"
-                              : "Admin-only action"}
+                              : "Unavailable"}
                           </span>
                         )}
                       </td>

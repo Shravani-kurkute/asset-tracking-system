@@ -10,7 +10,7 @@ from app.database import get_db
 from app.models.asset import Asset, AssetStatus
 from app.models.assignment import Assignment
 from app.models.maintenance import MaintenanceRequest
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.asset import AssetCreate, AssetResponse, AssetUpdate
 
 router = APIRouter(prefix="/assets", tags=["Assets"])
@@ -90,7 +90,7 @@ def update_asset(
     asset_id: int,
     payload: AssetUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_dept_admin_or_above),
+    current_user: User = Depends(get_current_user),
 ):
     asset = (
         db.query(Asset)
@@ -102,6 +102,20 @@ def update_asset(
         raise HTTPException(status_code=404, detail="Asset not found")
 
     data = payload.model_dump(exclude_unset=True)
+    is_admin = current_user.role in {UserRole.system_admin, UserRole.dept_admin}
+    is_self_return = (
+        data.get("status") == AssetStatus.Available
+        and asset.assigned_to == current_user.id
+        and asset.status == AssetStatus.Assigned
+        and set(data.keys()).issubset({"status", "return_date"})
+    )
+
+    if not is_admin and not is_self_return:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to update this asset",
+        )
+
     new_assigned_to = data.get("assigned_to", asset.assigned_to)
     new_status = data.get("status", asset.status)
 
